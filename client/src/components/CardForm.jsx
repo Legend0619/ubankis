@@ -12,10 +12,6 @@ export default function CardForm({ onSubmit, busy, error, submitLabel }) {
 
   return (
     <form className="form" onSubmit={(e) => { e.preventDefault(); onSubmit(card); }}>
-      <div className="demo-note">
-        <strong>Test mode</strong> — no real charge. Use <code>4242 4242 4242 4242</code>, any future date and any CVC.
-        <code>4000 0000 0000 0002</code> simulates a decline.
-      </div>
       <label>Name on card<input className="input" value={card.name} onChange={(e) => setCard({ ...card, name: e.target.value })} autoComplete="cc-name" required /></label>
       <label>Card number
         <input className="input" inputMode="numeric" autoComplete="cc-number" placeholder="1234 1234 1234 1234"
