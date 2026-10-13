@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-const TOKEN_KEY = "ubankis-token";
+const TOKEN_KEY = "ubenkis-token";
 
 export function getToken() {
   try {

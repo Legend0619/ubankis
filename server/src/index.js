@@ -5,16 +5,13 @@ import cors from "cors";
 import { CLIENT_DIST, CLIENT_URL, PORT } from "./config.js";
 import { db } from "./db.js";
 import { seed } from "./seed.js";
-import { paymentMode } from "./payments.js";
 import authRoutes from "./routes/auth.js";
-import catalogRoutes from "./routes/catalog.js";
-import orderRoutes from "./routes/orders.js";
-import miscRoutes from "./routes/misc.js";
+import leadRoutes from "./routes/leads.js";
 import adminRoutes from "./routes/admin.js";
 
-if (!db.prepare("SELECT COUNT(*) AS n FROM products").get().n) {
+if (!db.prepare("SELECT COUNT(*) AS n FROM users").get().n) {
   seed(db);
-  console.log("Seeded database with catalog and demo accounts.");
+  console.log("Seeded database with an admin account and sample leads.");
 }
 
 const app = express();
@@ -22,12 +19,10 @@ app.disable("x-powered-by");
 app.use(cors({ origin: CLIENT_URL }));
 app.use(express.json({ limit: "100kb" }));
 
-app.get("/api/health", (_req, res) => res.json({ ok: true, paymentMode: paymentMode() }));
+app.get("/api/health", (_req, res) => res.json({ ok: true }));
 app.use("/api/auth", authRoutes);
-app.use("/api/orders", orderRoutes);
 app.use("/api/admin", adminRoutes);
-app.use("/api", catalogRoutes);
-app.use("/api", miscRoutes);
+app.use("/api", leadRoutes);
 app.use("/api", (_req, res) => res.status(404).json({ error: "Not found" }));
 
 // In production, serve the built React app with SPA fallback.
@@ -44,5 +39,5 @@ app.use((err, _req, res, _next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Ubankis API on http://localhost:${PORT} (payments: ${paymentMode()})`);
+  console.log(`Ubenkis API on http://localhost:${PORT}`);
 });

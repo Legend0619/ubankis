@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { api, getToken, setToken } from "../api.js";
 
 const AuthContext = createContext(null);
@@ -18,24 +18,20 @@ export function AuthProvider({ children }) {
       .finally(() => setReady(true));
   }, []);
 
-  const signIn = useCallback(({ token, user }) => {
-    setToken(token);
-    setUser(user);
-    return user;
-  }, []);
-
   const value = useMemo(() => ({
     user,
     ready,
-    login: (email, password) => api("/auth/login", { method: "POST", body: { email, password } }).then(signIn),
-    register: (fields) => api("/auth/register", { method: "POST", body: fields }).then(signIn),
+    login: (email, password) =>
+      api("/auth/login", { method: "POST", body: { email, password } }).then(({ token, user }) => {
+        setToken(token);
+        setUser(user);
+        return user;
+      }),
     logout: () => {
       setToken(null);
       setUser(null);
     },
-    refresh: () => api("/auth/me").then(({ user }) => setUser(user)),
-    updateProfile: (fields) => api("/auth/me", { method: "PATCH", body: fields }).then(({ user }) => setUser(user)),
-  }), [user, ready, signIn]);
+  }), [user, ready]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

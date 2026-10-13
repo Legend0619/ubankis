@@ -1,136 +1,193 @@
 import { Link } from "react-router-dom";
-import { useApi } from "../api.js";
-import ProductCard from "../components/ProductCard.jsx";
-import FaqList from "../components/FaqList.jsx";
-import { CtaBand, Steps, Testimonials } from "../components/Sections.jsx";
-import { HOME_FAQS } from "./FaqPage.jsx";
+import Icon from "../components/Icon.jsx";
+import { CtaBand, Testimonials } from "../components/Sections.jsx";
+import { AI_DEV_ITEMS, CLIENTS, INDUSTRIES, MARKETING_CHANNELS, SERVICES, STATS } from "../data/site.js";
 
 export default function Home() {
-  const cats = useApi("/categories");
-  const best = useApi("/products?sort=popular");
-
   return (
     <>
       <section className="hero">
         <div className="container hero-inner">
           <div className="hero-copy">
-            <p className="eyebrow">Physician-led · 100% online · Delivered</p>
-            <h1>Reclaim your <span className="gold">edge.</span></h1>
+            <p className="eyebrow">Ubenkis LLC · Digital growth &amp; AI</p>
+            <h1>Smart solutions that <span className="gold">drive growth.</span></h1>
             <p className="lead">
-              Hormone optimization, medical weight loss, peptides and longevity care — prescribed by licensed physicians and shipped to your door in days.
+              Websites, marketing and AI automation built around your business — so you win more customers and spend less time on busywork.
             </p>
             <div className="hero-cta">
-              <Link to="/assessment" className="btn btn-gold">Take the 2-Minute Assessment</Link>
-              <Link to="/shop" className="btn btn-ghost">Shop Treatments</Link>
+              <Link to="/free-analysis" className="btn btn-gold">Get a Free Analysis</Link>
+              <Link to="/services" className="btn btn-ghost">Explore Services</Link>
             </div>
             <ul className="trust">
-              <li><strong>50k+</strong><span>patients treated</span></li>
-              <li><strong>4.9★</strong><span>average rating</span></li>
-              <li><strong>48h</strong><span>to your door</span></li>
+              {STATS.slice(0, 3).map(([value, label]) => <li key={label}><strong>{value}</strong><span>{label}</span></li>)}
             </ul>
           </div>
           <div className="hero-art" aria-hidden="true">
             <div className="orb" />
-            <div className="vial-card">
-              <div className="vial" />
-              <div>
-                <p className="vc-label">Your plan</p>
-                <p className="vc-title">TRT + Enclomiphene</p>
-                <div className="vc-bars">
-                  <div><span>Energy</span><i style={{ "--w": "88%" }} /></div>
-                  <div><span>Focus</span><i style={{ "--w": "76%" }} /></div>
-                  <div><span>Libido</span><i style={{ "--w": "92%" }} /></div>
-                </div>
+            <div className="dash-card">
+              <p className="vc-label">Growth dashboard</p>
+              <div className="dash-metrics">
+                <div><strong>+38%</strong><span>qualified leads</span></div>
+                <div><strong>−24%</strong><span>cost per lead</span></div>
+              </div>
+              <div className="dash-chart">
+                {[38, 46, 42, 58, 64, 61, 76, 88].map((h, i) => <i key={i} style={{ "--h": `${h}%` }} />)}
               </div>
             </div>
-            <div className="float-chip chip-1">✓ Labs reviewed by Dr. Patel</div>
-            <div className="float-chip chip-2">📦 Ships in 48 hours</div>
+            <div className="float-chip chip-1"><Icon name="cpu" size={16} /> AI agent booked 12 calls today</div>
+            <div className="float-chip chip-2"><Icon name="trending" size={16} /> ROAS 3.4×</div>
           </div>
         </div>
       </section>
 
-      <div className="logos">
-        <div className="container logos-inner">
-          <span>Trusted care</span>
-          <b>LICENSED IN 50 STATES</b><b>U.S. PHARMACIES</b><b>BOARD-CERTIFIED MDs</b><b>HIPAA SECURE</b>
-        </div>
-      </div>
-
-      <section className="section">
+      <section className="section" id="services">
         <div className="container">
-          <p className="eyebrow center">What we treat</p>
-          <h2 className="center">Programs built around you</h2>
-          <div className="cat-grid">
-            {cats.data?.categories.map((c) => (
-              <Link key={c.slug} to={`/treatments/${c.slug}`} className="cat" style={{ "--tint": c.tint }}>
-                <span className="ico">{c.icon}</span>
-                <h3>{c.name}</h3>
-                <p>{c.tagline}</p>
-                <span className="link">Explore {c.productCount} treatments →</span>
+          <p className="eyebrow center">What we do</p>
+          <h2 className="center">Services built to grow your business</h2>
+          <div className="service-grid">
+            {SERVICES.map((s) => (
+              <Link key={s.slug} to={`/services/${s.slug}`} className="service-card">
+                <span className="ico"><Icon name={s.icon} size={26} /></span>
+                <h3>{s.name}</h3>
+                <p>{s.summary}</p>
+                <span className="link">Explore more <Icon name="arrow" size={16} /></span>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section alt">
+      <section className="logos" id="clients">
+        <div className="container">
+          <p className="eyebrow center">We've worked with</p>
+          <div className="client-grid">
+            {CLIENTS.map(([name, style]) => <span key={name} className={`client client-${style}`}>{name}</span>)}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container split">
+          <div>
+            <p className="eyebrow">Efficiency</p>
+            <h2>Do more with the team you already have</h2>
+            <p className="lead">
+              Most businesses still run on manual work. Our clients hand repetitive tasks to AI and automation, freeing their people for the work that grows revenue.
+            </p>
+          </div>
+          <div className="card compare">
+            <Compare label="Average business" ai={12} />
+            <Compare label="Ubenkis clients" ai={40} highlight />
+            <div className="compare-legend">
+              <span><i className="ai" /> AI &amp; automation</span>
+              <span><i className="manual" /> Manual work</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="promo-band">
+        <div className="container promo-inner">
+          <div>
+            <h2>Grow revenue and cut costs with AI automation</h2>
+            <p>Clients average 12% more revenue and 18% lower operating costs within their first year.</p>
+          </div>
+          <Link to="/free-analysis" className="btn btn-dark">Apply Now</Link>
+        </div>
+      </section>
+
+      <section className="section alt" id="digital-marketing">
         <div className="container">
           <div className="shop-head">
             <div>
-              <p className="eyebrow">Best sellers</p>
-              <h2>Most-prescribed treatments</h2>
+              <p className="eyebrow">Digital marketing</p>
+              <h2>Every channel, one accountable team</h2>
             </div>
-            <Link to="/shop" className="btn btn-ghost btn-sm">View all →</Link>
+            <Link to="/services/digital-marketing" className="btn btn-ghost btn-sm">View all <Icon name="arrow" size={16} /></Link>
           </div>
-          <div className="product-grid">
-            {best.data?.products.slice(0, 4).map((p) => <ProductCard key={p.id} product={p} />)}
+          <div className="tile-grid three">
+            {MARKETING_CHANNELS.map((c) => (
+              <Link key={c.name} to={`/services/${c.to}`} className="tile">
+                <span className="ico"><Icon name={c.icon} /></span>
+                <div>
+                  <h3>{c.name}</h3>
+                  <p>{c.text}</p>
+                  <span className="link">View <Icon name="arrow" size={14} /></span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section tight">
+        <div className="container">
+          <div className="analysis-band">
+            <div>
+              <p className="eyebrow">Free · No obligation</p>
+              <h2>Get a free analysis for your business</h2>
+              <p className="lead">We'll review your website, ads and online presence and send you a prioritized list of opportunities within 2 business days.</p>
+            </div>
+            <Link to="/free-analysis" className="btn btn-gold">Try Now</Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="section alt" id="ai-development">
+        <div className="container">
+          <p className="eyebrow center">AI workforce &amp; development</p>
+          <h2 className="center">Technology that works as hard as you do</h2>
+          <div className="tile-grid four">
+            {AI_DEV_ITEMS.map((c) => (
+              <Link key={c.name} to={`/services/${c.to}`} className="tile stacked">
+                <span className="ico"><Icon name={c.icon} /></span>
+                <h3>{c.name}</h3>
+                <p>{c.text}</p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="section">
         <div className="container">
-          <p className="eyebrow center">How it works</p>
-          <h2 className="center">From assessment to doorstep in 3 steps</h2>
-          <Steps />
-        </div>
-      </section>
-
-      <section className="section alt">
-        <div className="container split">
-          <div>
-            <p className="eyebrow">Why Ubankis</p>
-            <h2>Real doctors. Real labs. Real results.</h2>
-            <p className="lead">We don't do one-size-fits-all. Every plan starts with your bloodwork and a conversation with a licensed physician, and gets adjusted as your numbers change.</p>
-            <Link to="/membership" className="btn btn-gold">See Membership Plans</Link>
-          </div>
-          <ul className="feature-list">
-            <li><strong>Lab-guided dosing</strong><span>Comprehensive panels before and during treatment.</span></li>
-            <li><strong>Licensed U.S. pharmacies</strong><span>Medications from 503A/503B compounding and retail pharmacies.</span></li>
-            <li><strong>Unlimited messaging</strong><span>Reach your care team any time, with replies within one business day.</span></li>
-            <li><strong>Transparent pricing</strong><span>No insurance hassles, no hidden fees. Cancel anytime.</span></li>
-          </ul>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <p className="eyebrow center">Real results</p>
-          <h2 className="center">Trusted by thousands</h2>
+          <p className="eyebrow center">Client results</p>
+          <h2 className="center">What our clients say</h2>
           <Testimonials />
         </div>
       </section>
 
-      <section className="section alt">
-        <div className="container narrow">
-          <p className="eyebrow center">FAQ</p>
-          <h2 className="center">Questions, answered</h2>
-          <FaqList items={HOME_FAQS} />
-          <p className="center" style={{ marginTop: "2rem" }}><Link to="/faq" className="gold">See all FAQs →</Link></p>
+      <CtaBand />
+
+      <section className="section" id="industries">
+        <div className="container">
+          <p className="eyebrow center">Industries</p>
+          <h2 className="center">Industries we serve</h2>
+          <div className="tile-grid three">
+            {INDUSTRIES.map((ind) => (
+              <div key={ind.name} className="tile">
+                <span className="ico"><Icon name={ind.icon} /></span>
+                <div>
+                  <h3>{ind.name}</h3>
+                  <p>{ind.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
-
-      <CtaBand />
     </>
+  );
+}
+
+function Compare({ label, ai, highlight = false }) {
+  return (
+    <div className={`compare-row ${highlight ? "highlight" : ""}`}>
+      <div className="compare-head"><strong>{label}</strong><span>{ai}% AI · {100 - ai}% manual</span></div>
+      <div className="compare-bar">
+        <i className="ai" style={{ width: `${ai}%` }} />
+        <i className="manual" style={{ width: `${100 - ai}%` }} />
+      </div>
+    </div>
   );
 }

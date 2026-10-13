@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 
-export function safeNext(params) {
+function safeNext(params) {
   const next = params.get("next") || "";
   // Only same-origin paths; browsers treat "//" and "/\" as protocol-relative URLs.
-  return /^\/(?![/\\])/.test(next) && !next.includes("\\") ? next : "/account";
+  return /^\/(?![/\\])/.test(next) && !next.includes("\\") ? next : "/admin";
 }
 
 export default function Login() {
@@ -35,14 +35,13 @@ export default function Login() {
   return (
     <section className="section auth">
       <form className="card form auth-card" onSubmit={submit}>
-        <h1>Welcome back</h1>
-        <p className="muted">Sign in to your Ubankis account.</p>
+        <h1>Team sign in</h1>
+        <p className="muted">Sign in to the Ubenkis admin dashboard.</p>
         <label>Email<input className="input" type="email" autoComplete="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required /></label>
         <label>Password<input className="input" type="password" autoComplete="current-password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required /></label>
         {error && <p className="form-error">{error}</p>}
         <button className="btn btn-gold btn-block" disabled={busy}>{busy ? "Signing in…" : "Sign in"}</button>
-        <p className="muted small center">New to Ubankis? <Link className="gold" to={`/register?next=${encodeURIComponent(next)}`}>Create an account</Link></p>
-        <p className="demo-note small">Demo accounts: <code>demo@ubankis.com</code> / <code>demo1234</code> · admin: <code>admin@ubankis.com</code> / <code>admin1234</code></p>
+        <p className="demo-note small">Demo admin: <code>admin@ubenkis.com</code> / <code>admin1234</code></p>
       </form>
     </section>
   );
