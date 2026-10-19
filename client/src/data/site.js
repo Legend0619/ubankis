@@ -5,9 +5,9 @@ export const COMPANY = {
   name: "Ubenkis",
   legalName: "Ubenkis LLC",
   email: "support@ubenkis.com",
-  phone: "(800) 555-0142",
+  phone: "(240) 685-2368",
   hours: "Mon–Fri, 9am–6pm CT",
-  address: ["1200 Wellness Way, Suite 400", "Austin, TX 78701"],
+  address: ["600 Congress Ave", "Austin, TX 78701"],
   socials: [
     ["LinkedIn", "https://www.linkedin.com/"],
     ["Instagram", "https://www.instagram.com/"],
